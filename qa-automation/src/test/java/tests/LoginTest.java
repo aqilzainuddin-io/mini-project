@@ -33,6 +33,17 @@ public class LoginTest {
         Assert.assertTrue(message.contains("You logged into a secure area!"),"Login was not successful!");
     }
 
+    @Test
+    public void invalidLoginTest(){
+
+        loginPage.enterUsername("wronguser");
+        loginPage.enterPassword("wrongpass");
+        loginPage.clickLogin();
+
+        String message = loginPage.getErrorMessage();
+        Assert.assertTrue(message.contains("Your username is invalid!")||message.contains("Your password is invalid!"),"Error message not display correctly!");
+    }
+
     @AfterMethod
     public void tearDown(){
         if(driver != null){
