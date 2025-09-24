@@ -18,7 +18,7 @@
           <artifactId>selenium-java</artifactId>
           <version>4.15.0</version>
       </dependency>
-  
+
       <!-- TestNG -->
       <dependency>
           <groupId>org.testng</groupId>
@@ -26,14 +26,14 @@
           <version>7.10.2</version>
           <scope>test</scope>
       </dependency>
-  
+
       <!-- WebDriverManager - manage browser driver binaries -->
       <dependency>
           <groupId>io.github.bonigarcia</groupId>
           <artifactId>webdrivermanager</artifactId>
           <version>5.5.3</version>
       </dependency>
-  
+
       <!-- Optional: RestAssured (for API testing later) -->
       <dependency>
           <groupId>io.rest-assured</groupId>
@@ -42,7 +42,7 @@
           <scope>test</scope>
       </dependency>
   </dependencies>
-  
+
   <build>
       <plugins>
           <!-- Java Compiler -->
@@ -54,7 +54,7 @@
                   <release>21</release>
               </configuration>
           </plugin>
-  
+
           <!-- Surefire (runs TestNG tests when you run `mvn test`) -->
           <plugin>
               <groupId>org.apache.maven.plugins</groupId>
@@ -68,6 +68,5 @@
           </plugin>
       </plugins>
   </build>
-
 
 </project>
