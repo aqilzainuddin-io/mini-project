@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 public class LoginPage {
     
     private WebDriver driver;
+    private WebDriverWait wait;
 
     // Locators
     private By usernameField = By.id("username");
@@ -20,24 +21,26 @@ public class LoginPage {
     // Constructor
     public LoginPage(WebDriver driver){
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
     // Actions
-    public void enterUsername(String username){
+    private void clearFields(){
+        driver.findElement(usernameField).clear();
+        driver.findElement(passwordField).clear();
+    }
+    
+    public void login(String username, String password){
+        clearFields();
         driver.findElement(usernameField).sendKeys(username);
-    }
-    public void enterPassword(String password){
         driver.findElement(passwordField).sendKeys(password);
-    }
-    public void clickLogin(){
         driver.findElement(loginButton).click();
     }
+
     public String getSuccessMessage(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(successMessage)).getText();
     }
     public String getErrorMessage(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         return wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage)).getText();
     }
 

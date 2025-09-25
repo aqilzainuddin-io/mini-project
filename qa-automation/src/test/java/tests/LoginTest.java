@@ -1,13 +1,13 @@
 package tests;
+
 import pages.LoginPage;
 import utils.DriverFactory;
 
+import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.Assert;
-
-import org.openqa.selenium.WebDriver;
 
 public class LoginTest {
     
@@ -23,9 +23,7 @@ public class LoginTest {
 
     @Test
     public void validLoginTest(){
-        loginPage.enterUsername("tomsmith");
-        loginPage.enterPassword("SuperSecretPassword!");
-        loginPage.clickLogin();
+        loginPage.login("tomsmith","SuperSecretPassword!");
 
         String message = loginPage.getSuccessMessage();
         Assert.assertTrue(message.contains("You logged into a secure area!"), 
@@ -34,9 +32,7 @@ public class LoginTest {
 
     @Test
     public void invalidLoginTest(){
-        loginPage.enterUsername("wronguser");
-        loginPage.enterPassword("wrongpass");
-        loginPage.clickLogin();
+        loginPage.login("wronguser","wrongpass");
 
         String message = loginPage.getErrorMessage();
         Assert.assertTrue(message.contains("Your username is invalid!") 
@@ -44,6 +40,33 @@ public class LoginTest {
             "Error message not displayed correctly! Actual message: " + message);
     }
 
+    @Test
+    public void emptyUsernameAndPasswordTest(){
+        loginPage.login("","");
+
+        String message = loginPage.getErrorMessage();
+        Assert.assertTrue(message.contains("Your username is invalid!"),
+                "Error message for empty fields not displayed!");
+    }
+
+    @Test
+    public void onlyUsernameProvidedTest(){
+        loginPage.login("tomsmith","");
+
+        String message = loginPage.getErrorMessage();
+        Assert.assertTrue(message.contains("Your password is invalid!") 
+                       || message.contains("Your username is invalid!"),
+                "Error message for missing password not displayed!");
+    }
+
+    @Test
+    public void onlyPasswordProvidedTest(){
+        loginPage.login("","SuperSecretPassword!");
+
+        String message = loginPage.getErrorMessage();
+        Assert.assertTrue(message.contains("Your username is invalid!"),
+                "Error message for missing username not displayed!");
+    }
 
     @AfterClass
     public void tearDown(){
