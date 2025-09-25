@@ -1,27 +1,25 @@
 package tests;
+import pages.LoginPage;
+import utils.DriverFactory;
 
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.Assert;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-import pages.LoginPage;
 
 public class LoginTest {
     
     private WebDriver driver;
     private LoginPage loginPage;
 
-    @BeforeMethod
-    public void setUp(){
-       driver = new ChromeDriver();
-       driver.manage().window().maximize();
-       driver.get("https://the-internet.herokuapp.com/login");
-       loginPage = new LoginPage(driver);
+    @BeforeClass
+    public void setUp(){       
+        driver = DriverFactory.getDriver();
+        driver.get("https://the-internet.herokuapp.com/login");
+        loginPage = new LoginPage(driver);
     }
-
 
     @Test
     public void validLoginTest(){
@@ -30,24 +28,25 @@ public class LoginTest {
         loginPage.clickLogin();
 
         String message = loginPage.getSuccessMessage();
-        Assert.assertTrue(message.contains("You logged into a secure area!"),"Login was not successful!");
+        Assert.assertTrue(message.contains("You logged into a secure area!"), 
+            "Login was not successful! Actual message: " + message);
     }
 
     @Test
     public void invalidLoginTest(){
-
         loginPage.enterUsername("wronguser");
         loginPage.enterPassword("wrongpass");
         loginPage.clickLogin();
 
         String message = loginPage.getErrorMessage();
-        Assert.assertTrue(message.contains("Your username is invalid!")||message.contains("Your password is invalid!"),"Error message not display correctly!");
+        Assert.assertTrue(message.contains("Your username is invalid!") 
+                    || message.contains("Your password is invalid!"), 
+            "Error message not displayed correctly! Actual message: " + message);
     }
 
-    @AfterMethod
+
+    @AfterClass
     public void tearDown(){
-        if(driver != null){
-            driver.quit();
-        }
+        DriverFactory.quitDriver();
     }
 }
