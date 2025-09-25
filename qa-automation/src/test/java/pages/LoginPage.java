@@ -1,5 +1,8 @@
 package pages;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -30,10 +33,12 @@ public class LoginPage {
         driver.findElement(loginButton).click();
     }
     public String getSuccessMessage(){
-        return driver.findElement(successMessage).getText();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(successMessage)).getText();
     }
     public String getErrorMessage(){
-        return driver.findElement(errorMessage).getText();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(errorMessage)).getText();
     }
 
 }
