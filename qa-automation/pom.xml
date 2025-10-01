@@ -11,7 +11,13 @@
   <name>qa-automation</name>
   <url>http://maven.apache.org</url>
 
-  <dependencies>
+  <dependencies>   
+      <dependency>
+        <groupId>io.github.cdimascio</groupId>
+        <artifactId>dotenv-java</artifactId>
+        <version>3.0.0</version>
+      </dependency>
+      
       <!-- Selenium -->
       <dependency>
           <groupId>org.seleniumhq.selenium</groupId>
