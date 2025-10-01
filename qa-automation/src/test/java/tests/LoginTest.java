@@ -2,6 +2,7 @@ package tests;
 
 import pages.LoginPage;
 import utils.DriverFactory;
+import utils.EnvReader;
 
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterClass;
@@ -14,16 +15,28 @@ public class LoginTest {
     private WebDriver driver;
     private LoginPage loginPage;
 
+    private String validUsername;
+    private String validPassword;
+    private String invalidUsername;
+    private String invalidPassword;
+
     @BeforeClass
     public void setUp(){       
         driver = DriverFactory.getDriver();
         driver.get("https://the-internet.herokuapp.com/login");
         loginPage = new LoginPage(driver);
+
+        // Read from .env
+        validUsername = EnvReader.get("USERNAME");
+        validPassword = EnvReader.get("PASSWORD");
+        invalidUsername = EnvReader.get("INVALID_USERNAME");
+        invalidPassword = EnvReader.get("INVALID_PASSWORD");
+
     }
 
     @Test
     public void validLoginTest(){
-        loginPage.login("tomsmith","SuperSecretPassword!");
+        loginPage.login(validUsername, validPassword);
 
         String message = loginPage.getSuccessMessage();
         Assert.assertTrue(message.contains("You logged into a secure area!"), 
@@ -32,7 +45,7 @@ public class LoginTest {
 
     @Test
     public void invalidLoginTest(){
-        loginPage.login("wronguser","wrongpass");
+        loginPage.login(invalidUsername, invalidPassword);
 
         String message = loginPage.getErrorMessage();
         Assert.assertTrue(message.contains("Your username is invalid!") 
@@ -42,7 +55,7 @@ public class LoginTest {
 
     @Test
     public void emptyUsernameAndPasswordTest(){
-        loginPage.login("","");
+        loginPage.login("", "");
 
         String message = loginPage.getErrorMessage();
         Assert.assertTrue(message.contains("Your username is invalid!"),
@@ -51,7 +64,7 @@ public class LoginTest {
 
     @Test
     public void onlyUsernameProvidedTest(){
-        loginPage.login("tomsmith","");
+        loginPage.login(validUsername,""); 
 
         String message = loginPage.getErrorMessage();
         Assert.assertTrue(message.contains("Your password is invalid!") 
@@ -61,7 +74,7 @@ public class LoginTest {
 
     @Test
     public void onlyPasswordProvidedTest(){
-        loginPage.login("","SuperSecretPassword!");
+        loginPage.login("", validPassword); 
 
         String message = loginPage.getErrorMessage();
         Assert.assertTrue(message.contains("Your username is invalid!"),
