@@ -27,8 +27,8 @@ public class LoginTest {
         loginPage = new LoginPage(driver);
 
         // Read from .env
-        validUsername = EnvReader.get("USERNAME");
-        validPassword = EnvReader.get("PASSWORD");
+        validUsername = EnvReader.get("VALID_USERNAME");
+        validPassword = EnvReader.get("VALID_PASSWORD");
         invalidUsername = EnvReader.get("INVALID_USERNAME");
         invalidPassword = EnvReader.get("INVALID_PASSWORD");
 
