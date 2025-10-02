@@ -19,11 +19,13 @@ public class LoginTest {
     private String validPassword;
     private String invalidUsername;
     private String invalidPassword;
+    private String baseUrl;
 
     @BeforeClass
     public void setUp(){       
         driver = DriverFactory.getDriver();
-        driver.get("https://the-internet.herokuapp.com/login");
+        baseUrl = EnvReader.get("BASE_URL");
+        driver.get(baseUrl+"/login");
         loginPage = new LoginPage(driver);
 
         // Read from .env
